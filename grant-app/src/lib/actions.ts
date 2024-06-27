@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import NgoModel from "@/models/ngos"
 import EmailModel from "@/models/emails"
+import axios from 'axios'
 
 
 export const addFoundation = async (formData: FormData) => {
@@ -44,11 +45,15 @@ export const createEmail = async (formData: FormData) => {
     const { name, foundation_email, emails, content } = Object.fromEntries(formData)
     try {
         await dbConnect()
-        const newEmailDoc = new EmailModel({name, foundation_email, emails, content, status: "not_queued"})
+        const newEmailDoc = new EmailModel({name, foundation_email, emails: emails.toString().split(","), content, status: "not_queued"})
         await newEmailDoc.save()
+        await axios.post('http://localhost:3000/api/send-email', { emailId: newEmailDoc._id.toString()})
         console.log('saved new email', newEmailDoc._id.toString())
     } catch (error) {
         console.error('error in adding an email doc', error)
         throw new Error('error in adding an email doc')
     }
+
+    revalidatePath('/dashboard/emails')
+    redirect('/dashboard/emails')
 }

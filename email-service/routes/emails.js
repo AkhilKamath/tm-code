@@ -14,7 +14,6 @@ router.use(timeDelay)
 
 router.post('/send', async (req, res) => {
   const { emailId } = req.body;
-
   try {
     await emailQueue.add('emailQueue', { emailId });
     await setEmailStatus(emailId, 'queued')

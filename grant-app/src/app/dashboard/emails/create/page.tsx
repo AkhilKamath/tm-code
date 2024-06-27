@@ -34,7 +34,7 @@ const CreateEmailPage = async () => {
             <div className="grow-[3] bg-soft p-5 rounded-lg mt-5">
                 <p>This is how your email will look like</p><br />
                 <div className="bg-white p-2.5">
-                    <input hidden name="content" value={EmailTemplateString}/>
+                    <input hidden name="content" value={EmailTemplateString} />
                     <EmailTemplate name={ngos[0].name} address={ngos[0].address} email={ngos[0].email} foundation_name={foundations[0].name} />
                 </div>
             </div>

@@ -22,6 +22,7 @@ const EmailPage = async ({searchParams}) => {
                         <td className="p-2.5">Name</td>
                         <td>Foundation email</td>
                         <td>Ngo emails</td>
+                        <td>Status</td>
                         {/* <td>Role</td>
                         <td>Status</td> */}
                         <td>Action</td>
@@ -45,7 +46,7 @@ const EmailPage = async ({searchParams}) => {
                             <td>{email.foundation_email}</td>
                             <td>{email.createdAt?.toString().slice(4, 16)}</td>
                             {/* <td>{foundation.isAdmin ? "Admin" : "Client"}</td> */}
-                            {/* <td>{foundation.isActive ? "active" : "passive"}</td> */}
+                            <td className="flex"><span className={`w-[50%] text-center bg-red-500 px-1.5 py-0.5 text-xs rounded-md ${email.status === 'not_queued' ? 'bg-orange-300' : email.status === 'queued' ? 'bg-red-300' :  'bg-green-300'}`}>{email.status}</span></td>
                             <td>
                                 <div className="flex gap-2.5">
                                     <Link href={`/dashboard/emails/${email._id.toString()}`}>
@@ -53,12 +54,6 @@ const EmailPage = async ({searchParams}) => {
                                             View
                                         </button>
                                     </Link>
-                                    <form action="{deleteFoundation}">
-                                        <input type="hidden" name="id" value={(email._id.toString())} />
-                                        <button className="py-1 px-2.5 rounded-md cursor-pointer border-none bg-color-action-unsafe text-text-soft">
-                                            Delete
-                                        </button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>

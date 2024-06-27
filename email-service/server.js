@@ -1,19 +1,20 @@
 // server.js
 const cluster = require('cluster');
 const numCPUs = 2; // require('os').cpus().length;
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
-const connectDB = require("./lib/dbConnect");
 const emailRouter = require('./routes/emails')
 const createWorker = require('./worker')
+const cors = require('cors')
+
 
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
 
 // Middleware
+app.use(cors())
 app.use(express.json());
 
 // API endpoint to enqueue emails
@@ -33,6 +34,7 @@ if (cluster.isMaster) {
     cluster.fork();
   });
 } else {
+  
   console.log(`Worker ${process.pid} started`);
   // Start server
   const PORT = process.env.PORT || 3001;
