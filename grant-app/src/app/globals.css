@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: 47 133 165;
+    --bg-soft: 240 249 249;
+    --text-primary: 30 32 52;
+    --color-action: 30 32 52;
+    --color-action-2: 19 220 233;
+    --color-action-unsafe: 220 20 60;
+    --color-primary-hover: 94 158 184;
+    --color-secondary-hover: 220 239 233;
+  }
+}
