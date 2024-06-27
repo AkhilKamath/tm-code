@@ -1,24 +1,13 @@
-// import { deleteUser } from "@/app/lib/actions";
-// import { fetchUsers } from "@/app/lib/data";
-// import Pagination from "@/app/ui/dashboard/pagination/pagination";
+import Pagination from "@/components/dashboard/pagination";
 import Search from "@/components/dashboard/search";
+import { fetchFoundations } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
-const FoundationsPage = async ({ searchParams }: { searchParams: Object }) => {
-    // const q = searchParams?.q || "";
-    // const page = searchParams?.page || 1;
-    //   const { count, foundations } = await fetchfoundations(q, page);
-    const count = 1
-    const foundations = [{
-        _id: 'abcd',
-        name: 'Foundation 1',
-        email: 'foundation1@gmail.com',
-        address: 'address 1',
-        createdAt: Date.now(),
-        website: '',
-        phone: ''
-    }]
+const FoundationsPage = async ({ searchParams }) => {
+    const q = searchParams?.q || "";
+    const page = searchParams?.page || 1;
+    const { count, foundations } = await fetchFoundations({q, page});
 
     return (
         <div className='bg-soft p-5 rounded-lg mt-5'>
@@ -31,7 +20,7 @@ const FoundationsPage = async ({ searchParams }: { searchParams: Object }) => {
             <table className="w-full mt-5">
                 <thead>
                     <tr>
-                        <td>Name</td>
+                        <td className="p-2.5">Name</td>
                         <td>Email</td>
                         <td>Created At</td>
                         {/* <td>Role</td>
@@ -41,8 +30,8 @@ const FoundationsPage = async ({ searchParams }: { searchParams: Object }) => {
                 </thead>
                 <tbody className="text-sm">
                     {foundations.map((foundation) => (
-                        <tr key={foundation._id}>
-                            <td>
+                        <tr key={foundation._id.toString()}>
+                            <td className="p-2.5">
                                 <div className="flex items-center gap-2.5">
                                     {/* <Image
                                         src={user.img || "/noavatar.png"}
@@ -60,13 +49,13 @@ const FoundationsPage = async ({ searchParams }: { searchParams: Object }) => {
                             {/* <td>{foundation.isActive ? "active" : "passive"}</td> */}
                             <td>
                                 <div className="flex gap-2.5">
-                                    <Link href={`/dashboard/foundations/${foundation._id}`}>
+                                    <Link href={`/dashboard/foundations/${foundation._id.toString()}`}>
                                         <button className="py-1 px-2.5 rounded-md cursor-pointer border-none bg-color-action-2">
                                             View
                                         </button>
                                     </Link>
                                     <form action="{deleteFoundation}">
-                                        <input type="hidden" name="id" value={(foundation._id)} />
+                                        <input type="hidden" name="id" value={(foundation._id.toString())} />
                                         <button className="py-1 px-2.5 rounded-md cursor-pointer border-none bg-color-action-unsafe text-text-soft">
                                             Delete
                                         </button>
@@ -77,7 +66,7 @@ const FoundationsPage = async ({ searchParams }: { searchParams: Object }) => {
                     ))}
                 </tbody>
             </table>
-            {/* <Pagination count={count} /> */}
+            <Pagination count={count} />
         </div>
     );
 };

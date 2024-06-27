@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <div className="p-5 rounded-lg flex items-center justify-between">
-      <div className="font-bold uppercase">{pathname.split("/").pop()}</div>
+      <div className="font-bold uppercase">{pathname.split('/').splice(2).join('/')}</div>
       <div className="flex items-center gap-5">
         <div className="flex items-center gap-2.5 bg-soft p-2.5 rounded-lg">
           <MdSearch />

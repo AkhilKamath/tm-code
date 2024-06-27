@@ -1,66 +1,44 @@
-import EmailTemplate from "@/components/dashboard/emails/emailtemplate"
+import EmailTemplate, { EmailTemplateString } from "@/components/dashboard/emails/emailtemplate"
 import NgoList from "@/components/dashboard/emails/ngolist"
 import SelectFoundation from "@/components/dashboard/emails/selectfoundation"
+import { createEmail } from "@/lib/actions"
+import { fetchFoundationsNoLimits, fetchNgosNoLimits } from "@/lib/data"
 
-const CreateEmailPage = () => {
-    const foundations = [
-        {
-            _id: 1,
-            name: 'found1',
-            email: 'found1@ngo.com',
-            address: 'address1'
-        },
-        {
-            _id: 2,
-            name: 'found2',
-            email: 'found2@ngo.com',
-            address: 'address2'
-        },
-        {
-            _id: 3,
-            name: 'found3',
-            email: 'found3@ngo.com',
-            address: 'address3'
+const CreateEmailPage = async () => {
+    const { foundations } = await fetchFoundationsNoLimits()
+    const ngos = (await fetchNgosNoLimits()).ngos.map(ngo => {
+        return {
+            name: ngo.name, 
+            email: ngo.email, 
+            address: ngo.address
         }
-    ]
-    const ngos = [
-        {
-            _id: 1,
-            name: 'ngo1',
-            email: 'ngo1@ngo.com',
-            address: 'address1'
-        },
-        {
-            _id: 2,
-            name: 'ngo2',
-            email: 'ngo2@ngo.com',
-            address: 'address2'
-        },
-        {
-            _id: 3,
-            name: 'ngo3',
-            email: 'ngo3@ngo.com',
-            address: 'address3'
-        }
-    ]
+    })
+
     return (
-        <div className="flex flex-col gap-2">
+        <form action={createEmail} className="flex flex-col gap-2">
             <div className="flex flex-row-reverse">
-                    <button className="text-sm p-2.5 bg-color-action text-text-soft border-none rounded-md cursor-pointer">Send</button>
+                <button className="text-sm p-2.5 bg-color-action text-text-soft border-none rounded-md cursor-pointer">Send</button>
             </div>
-            <div className="w-full bg-soft p-5 rounded-lg mt-5">
-                <SelectFoundation foundations={foundations} />
+            <div className="flex gap-2.5">
+                <div className="w-full bg-soft p-5 rounded-lg mt-5 flex flex-col">
+                    <label htmlFor="name">Name this email</label>
+                    <input className="p-4 bg-white border-2 border-solid border-color-secondary-hover rounded-lg " type="text" name="name"/>
+                </div>
+                <div className="w-full bg-soft p-5 rounded-lg mt-5">
+                    <SelectFoundation foundations={foundations} />
+                </div>
             </div>
             <div className='bg-soft p-5 rounded-lg mt-5'>
                 <NgoList ngos={ngos} />
             </div>
             <div className="grow-[3] bg-soft p-5 rounded-lg mt-5">
-                <p>This is how your email will look like</p><br/>
+                <p>This is how your email will look like</p><br />
                 <div className="bg-white p-2.5">
-                    <EmailTemplate name={ngos[0].name} address={ngos[0].address} email={ngos[0].email} fname={foundations[0].name}/>
+                    <input hidden name="content" value={EmailTemplateString}/>
+                    <EmailTemplate name={ngos[0].name} address={ngos[0].address} email={ngos[0].email} foundation_name={foundations[0].name} />
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

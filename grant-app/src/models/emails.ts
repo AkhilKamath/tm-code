@@ -1,12 +1,16 @@
 import mongoose, {Schema, Document, model, Types} from 'mongoose'
 
 export interface Email extends Document {
-    emails: [string],
+    name: string,
+    foundation_email: string,
+    emails: string[],
     content: string,
     status: string
 }
 
 const emailSchema = new Schema({
+    name: {type: String},
+    foundation_email: {type: String},
     emails: {type: [String]},
     content: {type: String},
     status: {type: String, enum: ['not_queued', 'queued', 'delivered']}
