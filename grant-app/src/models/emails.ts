@@ -9,7 +9,7 @@ export interface Email extends Document {
 const emailSchema = new Schema({
     emails: {type: [String]},
     content: {type: String},
-    status: {type: String, enum: ['pending', 'delivered']}
+    status: {type: String, enum: ['not_queued', 'queued', 'delivered']}
 },{ timestamps: true })
 
 const EmailModel = mongoose.models.Email as mongoose.Model<Email> || model<Email>('Email', emailSchema)
